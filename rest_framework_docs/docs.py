@@ -8,8 +8,13 @@ from django.core.urlresolvers import RegexURLResolver, RegexURLPattern
 from rest_framework.views import APIView
 from itertools import groupby
 from django.test.client import RequestFactory
-from django.contrib.auth import get_user_model
 
+try:
+    from django.contrib.auth import get_user_model
+except ImportError: # django < 1.5
+    from django.contrib.auth.models import User
+else:
+    User = get_user_model()
 
 class DocumentationGenerator():
     """
@@ -225,7 +230,7 @@ class DocumentationGenerator():
 
         factory = RequestFactory()
         request = factory.get('')
-        request.user = get_user_model()()
+        request.user = User()
 
         if hasattr(callback, '__call__'):
             callback = callback()
