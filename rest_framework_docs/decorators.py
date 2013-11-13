@@ -10,6 +10,8 @@ from django.http import HttpResponseRedirect
 import settings
 
 def has_ruolo(u):
+    if not settings.API_DOCS_PROTECTED:
+        return True
     if not u.is_authenticated():
         return False
     if u.is_superuser:
